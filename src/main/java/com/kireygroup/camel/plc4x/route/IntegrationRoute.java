@@ -22,13 +22,14 @@ public class IntegrationRoute extends EndpointRouteBuilder {
 			.log(">> Message from PLC4X ${body}");
 		
 		from(timer("modbus").period(10000))
-	        .pollEnrich(plc4x("modbus-tcp://localhost:502").tags(Map.of(
-					"value-1", "coil:1", 
-					"value-2", "coil:2",
-					"value-3", "coil:3",
-					"value-4", "coil:4",
-					"value-5", "coil:5",
-					"value-6", "holding-register:1")), 5000)
+	        .pollEnrich(plc4x("modbus-tcp://localhost:502")
+	        		.tags(Map.of(
+	    					"coil-1", "coil:1", 
+	    					"coil-2", "coil:2",
+	    					"coil-3", "coil:3",
+	    					"coil-4", "coil:4",
+	    					"coil-5", "coil:5",
+	    					"holding-register-1", "holding-register:1")), 5000)
 	        .log(LoggingLevel.INFO, LOG, ">> Message from modbus ${body}");
 	}
 }
