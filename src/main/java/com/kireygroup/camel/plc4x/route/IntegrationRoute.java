@@ -16,10 +16,10 @@ public class IntegrationRoute extends EndpointRouteBuilder {
 	@Override
 	public void configure() throws Exception {
 		
-		from(plc4x("opcua:tcp://KG2513.kg.kireygroup.com:53530/OPCUA/SimulationServer")
-				.tags(Map.of("Data", "ns=3;i=1002")))
-			.autoStartup(false)
-			.log(">> Message from PLC4X ${body}");
+		from(timer("opcua").period(10000))
+	        .pollEnrich(plc4x("opcua:tcp://KG2513.kg.kireygroup.com:53530/OPCUA/SimulationServer")
+	        		.tags(Map.of("Data", "ns=3;i=1002")), 5000)
+	        .log(LoggingLevel.INFO, LOG, ">> Message from opcua ${body}");
 		
 		from(timer("modbus").period(10000))
 	        .pollEnrich(plc4x("modbus-tcp://localhost:502")
